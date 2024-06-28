@@ -1,0 +1,35 @@
+{
+  "name": "edge_backend",
+  "version": "1.0.0",
+  "description": "NOTE THAT this is just a temporary documentation repo, the permanent backend and documentation will be shared soon",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emblocktech/edge_backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emblocktech/edge_backend/issues"
+  },
+  "homepage": "https://github.com/emblocktech/edge_backend#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "constants": "^0.0.2",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.10.1",
+    "nodemon": "^3.1.4",
+    "sequelize": "^6.37.3",
+    "zod": "^3.23.8"
+  },
+  "type": "module"
+}
