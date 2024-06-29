@@ -5,6 +5,7 @@ import getProductModel from '../models/productsModel.js';
 
 //const app = express();
 //app.use(express.json());
+const router = express.Router();
 let products = [];//it is mimicking the products table in database.
 const isAdmin = true; //we should authorize the user and determine if that is admin or not
 
@@ -23,13 +24,13 @@ const ProductSchema = z.object({
     category_id: z.number(),
 });
 
-const getProduct=async (req,res)=>{
+router.get("/",async (req,res)=>{
     const product = await getProductModel();
     const display = await product.findAll();
     res.status(200).json(display);
-};
+});
 
-const postProdById = async (req,res)=>{
+router.post("/:id",async (req,res)=>{
     const product = await getProductModel();
     if(isAdmin){
         const {id} = req.params;
@@ -50,9 +51,9 @@ const postProdById = async (req,res)=>{
             console.log(err.message);
         }
     }
-};
+});
 
-const getProdById= async (req,res)=>{
+router.get("/:id",async (req,res)=>{
     const {id} = req.params;
     const product = await getProductModel();
     const selected_product = await product.findOne({
@@ -61,9 +62,9 @@ const getProdById= async (req,res)=>{
         }
     });
     res.status(200).json(selected_product);
-};
+});
 
-const updateProducts= async (req,res)=>{
+router.put("/:id", async (req,res)=>{
     const {id} = req.params;
     const product = await getProductModel();
     if(req.body == null || Object.keys(req.body).length === 0){
@@ -79,9 +80,9 @@ const updateProducts= async (req,res)=>{
         res.status(400).json({msg: "failed to update"});
     }
     
-};
+});
 
-const deleteProducts = async (req,res)=>{
+router.delete("/:id",async (req,res)=>{
     const {id} = req.params;
     const product = await getProductModel();
     
@@ -99,6 +100,6 @@ const deleteProducts = async (req,res)=>{
         console.log(err.message);
         res.status(400).json({msg:"failed to delete"});
     }
-};
+});
 
-export default {getProduct,getProdById,postProdById,updateProducts,deleteProducts};
+export default router;

@@ -1,6 +1,8 @@
 import {z} from 'zod';
 import getCategoriesModel from '../models/categoriesModel.js';
+import express from 'express';
 
+const router = express.Router();
 const idAdmin = true;
 
 const categorySchema = z.object({
@@ -11,14 +13,14 @@ const categorySchema = z.object({
     extras: z.any(z.string()).optional()
 });
 
-const getCategories = async (req,res)=>{
+router.get('/',async (req,res)=>{
     const category = await getCategoriesModel();
     const all_category = await category.findAll();
     res.status(200).json(all_category);
 
-};
+});
 
-const getCatgoryById = async (req,res)=>{
+router.get('/:id', async (req,res)=>{
     const category = await getCategoriesModel();
     const {id} = req.params;
     try{
@@ -29,9 +31,9 @@ const getCatgoryById = async (req,res)=>{
     catch(err){
         console.log(err);
     }
-};
+});
 
-const postCategory = async (req,res)=>{
+router.post('/',async (req,res)=>{
     const category = await getCategoriesModel();
     const values = req.body;
     console.log(values);
@@ -43,9 +45,9 @@ const postCategory = async (req,res)=>{
     catch(err){
         console.log(err.message);
     }
-};
+})
 
-const updateCategory = async (req,res) =>{
+router.put('/:id',async (req,res) =>{
     const {id} = req.params;
     const values = req.body;
     if(values == null || Object.keys(req.body).length ===0){
@@ -63,9 +65,9 @@ const updateCategory = async (req,res) =>{
         res.status(200).json({msg:"failed to update"});
     }
 
-};
+});
 
-const deleteCategory = async (req,res)=>{
+router.delete('/:id',async (req,res)=>{
     const {id} = req.params;
     const category = await getCategoriesModel();
     const toDelete = await category.findOne({where:{id:id}});
@@ -80,6 +82,6 @@ const deleteCategory = async (req,res)=>{
         res.status(200).json({msg:"failed to delete"});
     }
 
-};
+});
 
-export default {getCategories,getCatgoryById,postCategory,updateCategory,deleteCategory};
+export default router;

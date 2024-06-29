@@ -1,6 +1,8 @@
 import {z} from 'zod';
 import getEventsModel  from '../models/eventsModel.js';
+import express from 'express';
 
+const router = express.Router();
 const isAdmin = true;//we should authorize the user and if the user is admin then this should be true else false
 
 const eventSchema = z.object({
@@ -11,22 +13,23 @@ const eventSchema = z.object({
     extras: z.array(z.string()).optional()
 });
 
-const getEvents = async (req,res)=>{
+router.get("/",async (req,res)=>{
     const events = await getEventsModel();
     const all_events = await events.findAll();
     console.log(all_events);
     res.status(200).json(all_events);
-};
+});
 
-const getEventsById = async (req,res)=>{
+
+router.get("/:id", async (req,res)=>{
     const {id} = req.params;
     const events = await getEventsModel();
     const selected_events = await events.findByPk(id);
     console.log(selected_events);
     res.status(200).json(selected_events);
-};
+});
 
-const postEvents = async (req,res)=>{
+router.post("/",async (req,res)=>{
     const values = req.body;
     if(isAdmin){
         try{
@@ -39,9 +42,9 @@ const postEvents = async (req,res)=>{
             console.log(err.message);
         }
     }
-};
+});
 
-const updateEvents = async (req,res)=>{
+router.put("/:id",async (req,res)=>{
     const values = req.body;
     const {id} = req.params;
     if(values == null || Object.keys(req.body).length ===0){
@@ -60,9 +63,9 @@ const updateEvents = async (req,res)=>{
             res.json({msg: "failed to update"});
         }
     }  
-};
+});
 
-const deleteEvents = async (req,res)=>{
+router.delete("/:id",async (req,res)=>{
     const {id} = req.params;
     const events = await getEventsModel();
     const event_delete = await events.findOne({where:{
@@ -80,9 +83,9 @@ const deleteEvents = async (req,res)=>{
         console.log(err);
         res.json({msg: "failed to delete"});
     }
-};
+});
 
-export default {getEvents,getEventsById,postEvents,updateEvents,deleteEvents};
+export default router;
 
 
 
