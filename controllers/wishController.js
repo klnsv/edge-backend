@@ -19,6 +19,7 @@ router.get("/", async (req,res)=>{
     //    queried.push(entry);
     //}
     res.json(wishList); //wishList should be replace by queried on the time of production
+    //in production it should be res.json({wishList: wishList, table_data: queried});
 });
 
 router.post("/", (req,res)=>{
