@@ -1,35 +1,34 @@
 
 //this file is meant to be destroyed before completion incase it hasn't been destroyed, dw you can delete it :)
 
-const {z, ZodString} = require('zod');
-const express = require('express');
-
-const app = express();
-app.use(express.json());
-products = [];
-const ProductSchema = z.object({
-    name: z.string().min(3).max(100),
-    price: z.number().positive(),
-    discount: z.number().positive(),
-    quantity: z.number().positive(),
-    descriptions: z.string().max(500),
-    images: z.record(z.string()),
-    parameters: z.record(z.string()),
-    extras:z.record(z.string()),
-    sale_id: z.number(),
-    category_id: z.number(),
-});
-
-app.post('/Products', (req,res)=>{
-    try{
-        const validate = ProductSchema.parse(req.body);
-        products.push(req.body);
-        console.log(products);
-        res.status(201).json({msg: 'Product created successfully'});
+const userOrders = [
+    {
+      id: 1,
+      user_id: 2,
+      product_ids: [
+        {
+          quantity: 1,
+          product_id: 1
+        }
+      ],
+      createdAt: "2024-06-30T10:49:43.000Z",
+      updatedAt: "2024-06-30T10:49:43.000Z"
+    },
+    {
+      id: 1,
+      user_id: 2,
+      product_ids: [
+        {
+          quantity: 2,
+          product_id: 2
+        }
+      ],
+      createdAt: "2024-06-30T10:49:43.000Z",
+      updatedAt: "2024-06-30T10:49:43.000Z"
     }
-    catch(err){
-        res.status(400).json({error: err});
-    }
-});
-
-app.listen(3000);
+  ];
+  
+  // Extract product_ids into a separate array
+  const productIdsArray = userOrders.map(order => order.product_ids[0].product_id);
+  
+  console.log(productIdsArray);

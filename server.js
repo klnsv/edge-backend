@@ -8,6 +8,8 @@ import bodyParser from "body-parser";
 import getProductModel from './models/productsModel.js';
 import getEventsModel from './models/eventsModel.js';
 import getCategoriesModel from './models/categoriesModel.js';
+import getAuthModel from "./models/usersModel.js";
+import getCartModel from "./models/cartModel.js";
 
 const server = constants.server;
 const app = express();
@@ -34,6 +36,8 @@ db.authenticate()
         getCategoriesModel();
         getEventsModel();
         getProductModel();
+        getAuthModel();
+        getCartModel();
 
     })
     .catch((err) => {
